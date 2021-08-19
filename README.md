@@ -1,7 +1,7 @@
 # Hubot Date Tracker
 
 
-[![npm version](https://badge.fury.io/js/hubot-brightwheel.svg)](https://badge.fury.io/js/hubot-event-tracker) [![Node CI](https://github.com/stephenyeargin/hubot-event-tracker/actions/workflows/nodejs.yml/badge.svg)](https://github.com/stephenyeargin/hubot-event-tracker/actions/workflows/nodejs.yml)
+[![npm version](https://badge.fury.io/js/hubot-event-tracker.svg)](https://badge.fury.io/js/hubot-event-tracker) [![Node CI](https://github.com/stephenyeargin/hubot-event-tracker/actions/workflows/nodejs.yml/badge.svg)](https://github.com/stephenyeargin/hubot-event-tracker/actions/workflows/nodejs.yml)
 
 Track days since or days until an event.
 

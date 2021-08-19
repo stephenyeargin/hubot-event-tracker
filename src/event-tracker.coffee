@@ -68,8 +68,8 @@ module.exports = (robot) ->
       if typeof date is 'string'
         date = moment(date)
       if moment().isSameOrBefore(date)
-        msg.send "#{event} was #{date.format('l')}"
-      else
         msg.send "#{event} is #{date.format('l')}"
+      else
+        msg.send "#{event} was #{date.format('l')}"
     else
       msg.send "I don't recall when #{event} happened."

@@ -46,7 +46,7 @@ describe 'event-tracker', ->
 
   it 'sets the date of an event using relative days', ->
     Date.now = () ->
-      return Date.parse('2021-10-01')
+      return Date.parse('Fri, 1 Oct 2021 12:00:00 UTC')
     selfRoom = @room
     selfRoom.user.say('alice', '@hubot it\'s been 5 days since some other thing').then =>
       expect(selfRoom.messages).to.eql [
@@ -55,7 +55,7 @@ describe 'event-tracker', ->
       ]
       expect(selfRoom.robot.brain.data.days_since).to.eql {
         'another thing': '2021-10-01',
-        'some other thing': '2021-09-25'
+        'some other thing': '2021-09-26'
       }
 
   it 'unsets the date of an event', ->
@@ -79,12 +79,12 @@ describe 'event-tracker', ->
 
   it 'responds to days since a known event in the future', ->
     Date.now = () ->
-      return Date.parse('2021-08-16')
+      return Date.parse('Mon, 16 Aug 2021 12:00:00 UTC')
     selfRoom = @room
     selfRoom.user.say('alice', '@hubot days since another thing').then =>
       expect(selfRoom.messages).to.eql [
         ['alice', '@hubot days since another thing']
-        ['hubot', '46 days until another thing']
+        ['hubot', '45 days until another thing']
       ]
       expect(@room.robot.brain.data.days_since).to.eql {
         'another thing': '2021-10-01'
@@ -92,12 +92,12 @@ describe 'event-tracker', ->
 
   it 'responds to days until a known event in the past', ->
     Date.now = () ->
-      return Date.parse('2022-03-05')
+      return Date.parse('Sat, 5 Mar 22 12:00:00 UTC')
     selfRoom = @room
     selfRoom.user.say('alice', '@hubot days since another thing').then =>
       expect(selfRoom.messages).to.eql [
         ['alice', '@hubot days since another thing']
-        ['hubot', 'It\'s been 154 days since another thing.']
+        ['hubot', 'It\'s been 155 days since another thing.']
       ]
       expect(@room.robot.brain.data.days_since).to.eql {
         'another thing': '2021-10-01'
@@ -105,7 +105,7 @@ describe 'event-tracker', ->
 
   it 'responds to a known event on the day of', ->
     Date.now = () ->
-      return Date.parse('2021-10-01')
+      return Date.parse('Fri, 1 Oct 2021 12:00:00 UTC')
     selfRoom = @room
     selfRoom.user.say('alice', '@hubot days since another thing').then =>
       expect(selfRoom.messages).to.eql [
@@ -116,14 +116,27 @@ describe 'event-tracker', ->
         'another thing': '2021-10-01'
       }
 
-  it 'responds to a known event with the date', ->
+  it 'responds to a known event in the past with the date', ->
     Date.now = () ->
-      return Date.parse('2021-10-01')
+      return Date.parse('Fri, 8 Oct 2021 12:00:00 UTC')
     selfRoom = @room
     selfRoom.user.say('alice', '@hubot when was another thing?').then =>
       expect(selfRoom.messages).to.eql [
         ['alice', '@hubot when was another thing?']
         ['hubot', 'another thing was 10/1/2021']
+      ]
+      expect(@room.robot.brain.data.days_since).to.eql {
+        'another thing': '2021-10-01'
+      }
+
+  it 'responds to a known event in the future with the date', ->
+    Date.now = () ->
+      return Date.parse('Mon, 16 Aug 2021 12:00:00 UTC')
+    selfRoom = @room
+    selfRoom.user.say('alice', '@hubot when is another thing?').then =>
+      expect(selfRoom.messages).to.eql [
+        ['alice', '@hubot when is another thing?']
+        ['hubot', 'another thing is 10/1/2021']
       ]
       expect(@room.robot.brain.data.days_since).to.eql {
         'another thing': '2021-10-01'
