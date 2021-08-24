@@ -90,6 +90,19 @@ describe 'event-tracker', ->
         'another thing': '2021-10-01'
       }
 
+  it 'responds to days since a known event (case insensitive) in the future', ->
+    Date.now = () ->
+      return Date.parse('Mon, 16 Aug 2021 12:00:00 UTC')
+    selfRoom = @room
+    selfRoom.user.say('alice', '@hubot days since aNotheR tHinG').then =>
+      expect(selfRoom.messages).to.eql [
+        ['alice', '@hubot days since aNotheR tHinG']
+        ['hubot', '45 days until aNotheR tHinG']
+      ]
+      expect(@room.robot.brain.data.days_since).to.eql {
+        'another thing': '2021-10-01'
+      }
+
   it 'responds to days until a known event in the past', ->
     Date.now = () ->
       return Date.parse('Sat, 5 Mar 22 12:00:00 UTC')
