@@ -154,3 +154,16 @@ describe 'event-tracker', ->
       expect(@room.robot.brain.data.days_since).to.eql {
         'another thing': '2021-10-01'
       }
+
+  it 'responds to a generic date with days until', ->
+    Date.now = () ->
+      return Date.parse('Mon, 16 Aug 2021 12:00:00 UTC')
+    selfRoom = @room
+    selfRoom.user.say('alice', '@hubot days until 5/17/2022').then =>
+      expect(selfRoom.messages).to.eql [
+        ['alice', '@hubot days until 5/17/2022']
+        ['hubot', '273 days until 5/17/2022']
+      ]
+      expect(@room.robot.brain.data.days_since).to.eql {
+        'another thing': '2021-10-01'
+      }

@@ -57,7 +57,18 @@ module.exports = (robot) ->
       else
         msg.send "#{(days_since*-1)} days until #{event}"
     else
-      msg.send "I don't recall when #{event} happened."
+      # Special case: if the event parses to a date
+      if moment(event).isValid()
+        dateEvent = moment(event)
+        days_since = moment().diff(dateEvent, 'days')
+        if days_since > 0
+          msg.send "It's been " + days_since + " days since #{dateEvent.format('l')}."
+        else if days_since == 0
+          msg.send "#{dateEvent.format('l')} is today!"
+        else
+          msg.send "#{(days_since*-1)} days until #{dateEvent.format('l')}"
+      else
+        msg.send "I don't recall when #{event} happened."
 
   robot.respond /when (was|is|did)?\s+(.*?)\??$/i, (msg) ->
     event = msg.match[2].trim()
