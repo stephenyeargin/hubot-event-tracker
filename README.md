@@ -26,8 +26,18 @@ Then add **hubot-event-tracker** to your `external-scripts.json`:
 ### Setting an Event
 
 ```
-user1>> hubot days since the last accident
-hubot>> It has been 20 days since the last accident.
+user1>> hubot it has been 20 days since the last accident
+hubot>> Okay, it has been 20 days since the last accident.
+```
+
+```
+user1>> hubot it is 20 days until Christmas 2025.
+hubot>> Okay, it is 20 days until Christmas 2025 (12/25/2025).
+```
+
+```
+user1>> hubot the big event is on 2025-01-15
+hubot>> Okay, the big event is on 1/15/2025.
 ```
 
 ### Recalling an Event
@@ -35,6 +45,21 @@ hubot>> It has been 20 days since the last accident.
 ```
 user1>> hubot days since the last accident
 hubot>> It has been 20 days since the last accident.
+```
+
+### Listing All Events
+
+```
+user>> hubot events list
+hubot>> I know about:
+hubot>> - [10/1/2021] another thing
+hubot>> - [12/1/2022] foo fighters
+```
+
+```
+user>> hubot events list | foo
+hubot>> I know about:
+hubot>> - [12/1/2022] foo fighters
 ```
 
 ## Credit
