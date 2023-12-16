@@ -53,19 +53,25 @@ module.exports = (robot) => {
   };
 
   robot.respond(/(?:event|day)s? list\s?(.*)?$/, (msg) => {
+    if (Object.keys(robot.brain.data.days_since).length === 0) {
+      msg.send('I don\'t remember any events yet.');
+      return;
+    }
     const filter = msg.match[1]?.replace('|', '').trim();
+    const result = [];
+    Object.keys(robot.brain.data.days_since).forEach((event) => {
+      if (filter && RegExp(filter, 'i').test(event) === false) {
+        return;
+      }
+      const date = robot.brain.data.days_since[event];
+      result.push(`- [${moment(date).format('l')}] ${event}`);
+    });
+    if (result.length === 0) {
+      msg.send(`I don't remember any events matching: "${filter}"`);
+      return;
+    }
     msg.send('I know about:');
-    return (() => {
-      const result = [];
-      Object.keys(robot.brain.data.days_since).forEach((event) => {
-        if (filter && RegExp(filter, 'i').test(event) === false) {
-          return;
-        }
-        const date = robot.brain.data.days_since[event];
-        result.push(msg.send(`- [${moment(date).format('l')}] ${event}`));
-      });
-      return result;
-    })();
+    msg.send(result.join('\n'));
   });
 
   robot.respond(/(.*?) (?:is|is on|on) ((19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01]))$/, (msg) => {

@@ -54,6 +54,18 @@ describe('event-tracker', function () {
     });
   });
 
+  it('lists known events with filter with no matches', async function () {
+    this.room.robot.brain.data.days_since = {
+      'another thing': '2021-10-01',
+    };
+    await this.room.user.say('alice', '@hubot events list | foobar').then(() => {
+      expect(this.room.messages).to.eql([
+        ['alice', '@hubot events list | foobar'],
+        ['hubot', 'I don\'t remember any events matching: "foobar"'],
+      ]);
+    });
+  });
+
   it('sets the date of an event', function () {
     this.room.user.say('alice', '@hubot the big event is on 2025-01-15').then(() => {
       expect(this.room.messages).to.eql([
