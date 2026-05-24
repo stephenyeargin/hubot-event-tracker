@@ -5,7 +5,6 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
-    'plugin:mocha/recommended',
   ],
   overrides: [
   ],
@@ -15,8 +14,7 @@ module.exports = {
   },
   rules: {
     'no-param-reassign': ['error', { props: false }],
+    'consistent-return': 'off',
+    'no-restricted-syntax': 'off',
   },
-  plugins: [
-    'mocha',
-  ],
 };
